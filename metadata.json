@@ -1,0 +1,6 @@
+{
+  "name": "Super Ludo Royale",
+  "description": "Premium 3D-style mobile-first Ludo board game featuring 2-4 players, smart AI bots, authentic rules, physics dice rolling, and arcade sound effects.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

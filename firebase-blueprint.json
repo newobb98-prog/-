@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and gameplay statistics",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique authentication UID of the player" },
+        "displayName": { "type": "string", "maxLength": 50, "description": "Player display name" },
+        "avatar": { "type": "string", "maxLength": 10, "description": "Player avatar icon emoji" },
+        "gamesPlayed": { "type": "number", "description": "Total number of games played" },
+        "gamesWon": { "type": "number", "description": "Total games won" },
+        "winStreak": { "type": "number", "description": "Current win streak" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["uid", "displayName", "gamesPlayed", "gamesWon"]
+    },
+    "GameRoom": {
+      "title": "GameRoom",
+      "description": "Multiplayer online match room state",
+      "type": "object",
+      "properties": {
+        "roomCode": { "type": "string", "maxLength": 8, "description": "6-letter unique room code" },
+        "hostId": { "type": "string", "description": "UID of the room creator" },
+        "status": { "type": "string", "enum": ["waiting", "in_game", "completed", "abandoned"], "description": "Current room state" },
+        "mode": { "type": "string", "enum": ["classic", "rush", "blitz"], "description": "Ludo game mode" },
+        "maxPlayers": { "type": "number", "description": "Max players allowed (2-4)" },
+        "playerCount": { "type": "number", "description": "Current number of players" },
+        "currentTurn": { "type": "string", "description": "Color of the player whose turn it is" },
+        "players": { "type": "object", "description": "Map of player states keyed by UID" },
+        "lastRoll": { "type": "number", "description": "Last dice roll value" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Room creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Room last updated timestamp" }
+      },
+      "required": ["roomCode", "hostId", "status", "mode", "maxPlayers"]
+    },
+    "MatchRecord": {
+      "title": "MatchRecord",
+      "description": "Archived completed match statistics",
+      "type": "object",
+      "properties": {
+        "matchId": { "type": "string", "description": "Unique match identifier" },
+        "winnerName": { "type": "string", "maxLength": 50, "description": "Name of the match winner" },
+        "winnerColor": { "type": "string", "description": "Color of the winner" },
+        "mode": { "type": "string", "description": "Game mode played" },
+        "totalRolls": { "type": "number", "description": "Total dice rolls across the match" },
+        "durationSeconds": { "type": "number", "description": "Length of match in seconds" },
+        "completedAt": { "type": "string", "format": "date-time", "description": "Completion timestamp" }
+      },
+      "required": ["matchId", "winnerName", "winnerColor", "mode"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores user profiles and player statistics"
+    },
+    "/rooms/{roomId}": {
+      "schema": "GameRoom",
+      "description": "Active multiplayer rooms"
+    },
+    "/matches/{matchId}": {
+      "schema": "MatchRecord",
+      "description": "Historical records of completed matches"
+    }
+  }
+}
